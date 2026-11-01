@@ -10,6 +10,14 @@ A focused AI productivity suite built with Python and Streamlit. Bring your own 
 
 You'll need Python 3.10 or newer and an OpenAI API key with access to `gpt-4o-mini` and an active billing arrangement.
 
+### Windows: one-click launcher
+
+Download and extract the entire repository, then double-click **`run.bat`**. On first run, it creates a virtual environment and installs the dependencies; subsequent runs check them for updates. An internet connection is required for setup. The app should open in your browser; otherwise, open the Local URL shown in the launcher window. Keep that window open while using the app, and press Ctrl+C to stop it.
+
+If Python is not installed, get it from [python.org](https://www.python.org/downloads/) and select **Add Python to PATH** during installation. You'll still need to enter your own OpenAI API key in the app.
+
+### Manual setup (all platforms)
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
