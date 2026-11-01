@@ -26,6 +26,14 @@ class AppTests(unittest.TestCase):
         app.toggle[0].set_value(False).run()
         self.assertFalse(any("#101827" in item.value for item in app.markdown))
 
+    def test_connection_diagnostic_does_not_require_a_key(self):
+        with patch("toolkit.llm.check_connection", return_value=(False, "Network blocked")) as check:
+            app = AppTest.from_file("../app.py", default_timeout=15).run()
+            next(button for button in app.button if button.label == "Test OpenAI connection").click().run()
+            self.assertFalse(app.exception)
+            self.assertEqual(app.error[0].value, "Network blocked")
+            check.assert_called_once_with()
+
     def test_regex_generation_and_download(self):
         with patch("toolkit.llm.generate", return_value="## Pattern\n```\n\\d+\n```") as generate:
             app = AppTest.from_file("../app.py", default_timeout=15).run()

@@ -27,6 +27,12 @@ streamlit run app.py
 
 Open the URL Streamlit prints in your browser. Enter your own OpenAI key in the sidebar, select a tool, and generate a result. Results can be downloaded as Markdown. Use the **Dark mode** switch in the sidebar to change the appearance for your current session. Your OpenAI account is responsible for the API usage charges.
 
+## Troubleshooting OpenAI connectivity
+
+In the sidebar, open **Connection help** and click **Test OpenAI connection**. The test uses the same OpenAI SDK and network settings as generation, but sends a dummy key rather than your key and does not send your content. A 401 response to the dummy key means an API server responded; it does not verify your real key, billing, or model access.
+
+If the test fails, check the message for DNS, certificate, timeout, proxy, or firewall guidance. If you are on a company network, ask the administrator to allow HTTPS access to `api.openai.com` and configure a trusted certificate if HTTPS is inspected. Check the computer's clock if certificate validation fails. Do not disable TLS verification. VPNs and antivirus software can also affect connectivity. The test runs on the computer hosting the app, not necessarily the computer viewing it. Preview environments may restrict outbound traffic.
+
 ## Privacy and limitations
 
 - The app does not intentionally save API keys, uploaded files, transcripts, or results to disk. The key and results live in Streamlit session memory while the session is active; they are handled by the server running the app. If you deploy this for others, secure the server and use HTTPS. Streamlit's upload handling and hosting infrastructure may have their own retention policies.

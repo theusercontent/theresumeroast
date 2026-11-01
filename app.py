@@ -4,7 +4,7 @@ from toolkit.core import (
     InputError, build_blog_prompt, build_regex_prompt, build_resume_prompt,
     extract_pdf_text, fetch_transcript, youtube_video_id,
 )
-from toolkit.llm import GenerationError, generate
+from toolkit.llm import GenerationError, check_connection, generate
 
 st.set_page_config(page_title="The Workbench | AI productivity toolkit", page_icon="✦", layout="wide", initial_sidebar_state="expanded")
 
@@ -67,6 +67,15 @@ with st.sidebar:
     st.markdown('<div class="nav-label">YOUR API KEY</div>', unsafe_allow_html=True)
     api_key = st.text_input("OpenAI API key", type="password", placeholder="sk-...", help="Your key is used for requests to OpenAI. It remains in this browser session's server memory and is not saved by this app.")
     st.caption("Bring your own key. OpenAI usage charges apply to your account.")
+    with st.expander("Connection help"):
+        st.caption("Test connectivity without sending your API key or content. This test uses the network of the computer running the app.")
+        if st.button("Test OpenAI connection"):
+            with st.spinner("Testing connection..."):
+                connected, message = check_connection()
+            if connected:
+                st.success(message)
+            else:
+                st.error(message)
     st.divider()
     st.markdown('<div class="nav-label">APPEARANCE</div>', unsafe_allow_html=True)
     dark_mode = st.toggle("Dark mode", key="dark_mode", help="Switch between light and dark appearance for this session.")
@@ -132,7 +141,7 @@ with left:
                 description = st.text_area("What should the pattern match?", placeholder="e.g. Match an email address that doesn't end in .org", height=150, max_chars=3000)
                 flavor = st.selectbox("Regex flavor", ["Python", "JavaScript", "PCRE", "Java", ".NET"])
             submit_label = {"Resume Roaster": "Generate review", "Video to Blog": "Generate blog post", "Regex Generator": "Generate pattern"}[tool]
-            submitted = st.form_submit_button(submit_label + "  →", type="primary", use_container_width=True)
+            submitted = st.form_submit_button(submit_label + "  →", type="primary", use_container_width=True, key=f"submit_{tool}")
         if tool == "Resume Roaster":
             st.markdown('<div class="tip"><strong>For the best results</strong><br>Use a text-based PDF and be specific about your target role. Remove personal details you don’t want to share.</div>', unsafe_allow_html=True)
         elif tool == "Video to Blog":
